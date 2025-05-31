@@ -7,7 +7,7 @@ my $mysql_database = $ENV{MYSQL_DATABASE} || die "no database supplied";
 my $mysql_user = $ENV{MYSQL_USER} || die "no database username supplied";
 my $mysql_password = $ENV{MYSQL_PASSWORD} || die "no database password supplied";
 
-my $dbi = 'DBI:mysql:database=' . $mysql_database . ';host=db;port=3306';
+my $dbi = 'DBI:mysql:database=' . $mysql_database . ';host=hvac-db;port=3306';
 
 my $dbh = DBI->connect($dbi, $mysql_user, $mysql_password, { mysql_auto_reconnect => 1, mysql_enable_utf8 => 1 }) || die $!;
 

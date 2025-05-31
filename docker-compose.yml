@@ -1,11 +1,11 @@
 #version: '2.4'
 
 services:
-  hvac_grapher:
+  hvac-grapher:
     build:
         context: '.'
         dockerfile: 'Dockerfile'
-    container_name: hvac_grapher
+    container_name: hvac-grapher
     restart: always
     volumes:
       - ./data:/data:delegated
@@ -14,7 +14,7 @@ services:
       MYSQL_DATABASE: hvac
       MYSQL_USER: hvac
       MYSQL_PASSWORD: aibie7Kufae8TioC
-  nginx:
+  hvac-nginx:
     image: nginx
     restart: always
     volumes:
@@ -22,9 +22,9 @@ services:
       - ./data:/var/www:delegated
     ports:
       - "8085:80/tcp"
-  db:
+  hvac-db:
     image: mariadb:10.5
-    container_name: db
+    container_name: hvac-db
     ports:
       - "127.0.0.1:3306:3306"
     volumes:

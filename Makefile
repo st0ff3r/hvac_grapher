@@ -5,12 +5,12 @@ build:
 
 up:
 	docker network create hvac
-	docker compose up -d hvac_grapher nginx db
+	docker compose up -d hvac-grapher hvac-nginx hvac-db
 
 down:
-	docker compose down hvac_grapher nginx db
+	docker compose down hvac-grapher hvac-nginx hvac-db
 	docker network rm hvac
 
 sh:
-	docker exec -it hvac_grapher /bin/bash
+	docker exec -it hvac-grapher /bin/bash
 	
