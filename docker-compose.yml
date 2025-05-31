@@ -30,8 +30,6 @@ services:
     volumes:
       - ./my.cnf:/etc/mysql/my.cnf
       - ./db_data:/var/lib/mysql:delegated
-      - ./hvac.sql:/hvac.sql
-      - ./hvac_setup_db.sh:/hvac_setup_db.sh
     restart: always
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
