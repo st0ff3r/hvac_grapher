@@ -11,6 +11,9 @@ services:
       - ./data:/data:delegated
     environment:
       HVAC_IP: 10.0.1.19
+      MYSQL_DATABASE: hvac
+      MYSQL_USER: hvac
+      MYSQL_PASSWORD: aibie7Kufae8TioC
   nginx:
     image: nginx
     restart: always
@@ -34,9 +37,6 @@ services:
       retries: 10
     environment:
       MYSQL_ROOT_PASSWORD: ZeefeiVahs9eigh4
-      MYSQL_DATABASE: hvac
-      MYSQL_USER: hvac
-      MYSQL_PASSWORD: aibie7Kufae8TioC
       TZ: 'Europe/Copenhagen'
 
 networks:
