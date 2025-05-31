@@ -1,0 +1,45 @@
+#version: '2.4'
+
+services:
+  hvac_grapher:
+    build:
+        context: '.'
+        dockerfile: 'Dockerfile'
+    container_name: hvac_grapher
+    restart: always
+    volumes:
+      - ./data:/data:delegated
+    environment:
+      HVAC_IP: 10.0.1.19
+  nginx:
+    image: nginx
+    restart: always
+    volumes:
+      - ./nginx.conf://etc/nginx/conf.d/default.conf:delegated
+      - ./data:/var/www:delegated
+    ports:
+      - "8085:80/tcp"
+  db:
+    image: mariadb:10.5
+    container_name: db
+    ports:
+      - "127.0.0.1:3306:3306"
+    volumes:
+      - ./my.cnf:/etc/mysql/my.cnf
+      - ./db_data:/var/lib/mysql:delegated
+    restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+    environment:
+      MYSQL_ROOT_PASSWORD: ZeefeiVahs9eigh4
+      MYSQL_DATABASE: hvac
+      MYSQL_USER: hvac
+      MYSQL_PASSWORD: aibie7Kufae8TioC
+      TZ: 'Europe/Copenhagen'
+
+networks:
+  default:
+    external:
+      name: hvac
