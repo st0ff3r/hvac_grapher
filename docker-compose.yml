@@ -21,7 +21,7 @@ services:
       - ./nginx.conf://etc/nginx/conf.d/default.conf:delegated
       - ./data:/var/www:delegated
     ports:
-      - "8085:80/tcp"
+      - "8086:80/tcp"
   hvac-db:
     image: mariadb:10.5
     container_name: hvac-db
