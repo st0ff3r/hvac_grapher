@@ -14,6 +14,7 @@ services:
       MYSQL_DATABASE: hvac
       MYSQL_USER: hvac
       MYSQL_PASSWORD: aibie7Kufae8TioC
+    stop_grace_period: 1s
   hvac-nginx:
     image: nginx
     restart: always
