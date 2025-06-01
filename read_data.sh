@@ -84,6 +84,6 @@ do
 
 	# export all data to file
 	/export_db.pl > /data/data.csv.tmp
-	mv /data/data/csv.tmp /data/data.csv
+	mv /data/data.csv.tmp /data/data.csv
 
 sleep 10; done  
