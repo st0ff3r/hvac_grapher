@@ -41,7 +41,7 @@ do
 	echo -ne "\t$RETURN_AIR_TEMP" >> /data/temp.txt
 
 	EXHAUST_AIR_TEMP=$(mbtget -r4 -a 76 -s $HVAC_IP|perl -ne 'chomp; s/;//; print unpack(q[s>], pack(q[cc], 0xff & ($_ >> 8), 0xff & $_)) / 10')
-	echo -ne "\t$RETURN_AIR_TEMP\n" >> /data/temp.txt
+	echo -ne "\t$EXHAUST_AIR_TEMP\n" >> /data/temp.txt
 
 	gnuplot /temp.gp;
 	mv /data/temp.png.tmp /data/temp.png
