@@ -62,6 +62,7 @@ COPY temp.gp /temp.gp
 COPY heat_cooling.gp /heat_cooling.gp
 COPY read_data.sh /read_data.sh
 COPY save_in_db.pl /save_in_db.pl
+COPY export_db.pl /export_db.pl
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 
 USER debian
