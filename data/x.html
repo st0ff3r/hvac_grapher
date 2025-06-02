@@ -1,0 +1,117 @@
+<html>
+<head>
+	<script type="text/javascript" src="dygraph.js"></script>
+	<link rel="stylesheet" type="text/css" src="dygraph.css" />
+</head>
+<body>
+	<style type="text/css">
+		td {
+		  height: 50px;
+		  vertical-align: top;
+		}
+	</style>
+	<style type="text/css">
+		.dygraph-legend {
+			font-family: Verdana, Geneva, sans-serif;
+		}
+		.dygraph-label {
+			font-family: Verdana, Geneva, sans-serif;
+		}
+		.dygraph-axis-label {
+			font-family: Verdana, Geneva, sans-serif;
+		}
+		.highlight {
+			font-weight: bold;
+		}
+		.default {
+			font-family: Verdana, Geneva, sans-serif;
+		}
+		.default-bold {
+			font-family: Verdana, Geneva, sans-serif;
+			font-weight: bold;
+		}
+	</style>
+	<script type="text/javascript">
+		var current_hash_string = window.location.hash;
+		var current_range = current_hash_string.match(/#(.+?)\-(.+?)(?:;\d+$)?$/);
+
+		// remove url after #
+		var current_url = window.location.href;
+		var current_url = current_url.replace(/#.*$/, "");
+
+		var range = [];
+		if (current_range) {
+			range.push(parseFloat(current_range[1]));
+			range.push(parseFloat(current_range[2]));
+		}
+		else {
+			// set default
+			range = [ (Date.now() - 86400000), Date.now() ];
+		}
+
+		var current_data_series_enabled = current_hash_string.match(/;(\d+)$/);
+		var data_series_enabled = 0;
+		if (current_data_series_enabled) {
+			data_series_enabled = current_data_series_enabled[1];
+		}
+		else {
+			// set default
+			data_series_enabled = 11;	// 0, 1, 3, 4, 5
+		}
+
+		Dygraph.onDOMready(function onDOMready() {
+			g2 = new Dygraph(
+				document.getElementById("graphdiv2"),
+				"data.csv",
+				{}
+			);
+		});
+		
+		function change(el) {
+			g2.setVisibility(parseInt(el.id), el.checked);
+	
+			if (el.checked) {
+				data_series_enabled += 1 << parseInt(el.id);
+			}
+			else {
+				data_series_enabled -= 1 << parseInt(el.id);
+			}
+			console.log(data_series_enabled);
+			window.history.replaceState("", "", current_url + "#" + range[0] + "-" + range[1] + ';' + data_series_enabled);
+		}
+		
+	</script>
+
+	<div>
+	<div id="graphdiv2" style="width:800px; height:445px; float:left;"></div>	
+	<div style="float:left;">
+		<table border="0" align="left" cellpadding="0" cellspacing="6" width="800">
+			<tr align="left" valign="bottom">
+				<td align="left"><span class="default"><input type=checkbox id="0" checked onClick="change(this)">Room temp.</span></td>
+				<td>&nbsp;</td>
+				<td align="left"><span class="default"><input type=checkbox id="1" checked onClick="change(this)">Co<sup>2</sup></span></td>
+				<td>&nbsp;</td>
+				<td align="left"><span class="default"><input type=checkbox id="2" checked onClick="change(this)">Supply air vol.</span></td>
+				<td>&nbsp;</td>
+				<td align="left"><span class="default"><input type=checkbox id="3" checked onClick="change(this)">Exhaust air vol.</span></td>
+				<td>&nbsp;</td>
+				<td align="left"><span class="default"><input type=checkbox id="4" checked onClick="change(this)">Outside air temp.</span></td>
+				<td>&nbsp;</td>
+				<td align="left"><span class="default"><input type=checkbox id="5" checked onClick="change(this)">Supply air temp.</span></td>
+				<td>&nbsp;</td>
+				<td align="left"><span class="default"><input type=checkbox id="6" checked onClick="change(this)">Return air temp.</span></td>
+				<td>&nbsp;</td>
+				<td align="left"><span class="default"><input type=checkbox id="7" checked onClick="change(this)">Exhaust air temp.</span></td>
+				<td>&nbsp;</td>
+				<td align="left"><span class="default"><input type=checkbox id="8" checked onClick="change(this)">Cooling</span></td>
+				<td>&nbsp;</td>
+				<td align="left"><span class="default"><input type=checkbox id="9" checked onClick="change(this)">Heat exchanger</span></td>
+				<td>&nbsp;</td>
+				<td align="left"><span class="default"><input type=checkbox id="10" checked onClick="change(this)">Heating</span></td>
+			</tr>
+		</table>
+	</div>
+	</div>
+
+</body>
+</html>

@@ -11,6 +11,9 @@ down:
 	docker compose down hvac-grapher hvac-nginx hvac-db
 	docker network rm hvac
 
+log:
+	docker compose logs -f
+	
 sh:
 	docker exec -it hvac-grapher /bin/bash
 	
