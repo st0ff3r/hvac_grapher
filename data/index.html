@@ -1,18 +1,165 @@
-<HTML>
-	<HEAD>
-	<meta name="robots" content="noindex">
-	<meta http-equiv="refresh" content="10">
-	<TITLE>co2 level</TITLE>
-	<style type="text/css">
-		img {
-		    max-width: 100%;
-		    max-height: 100%;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Dygraph Full Width</title>
+	<script type="text/javascript" src="dygraph.js"></script>
+	<link rel="stylesheet" type="text/css" href="dygraph.css" />
+	<style>
+		body {
+			font-family: Verdana, Geneva, sans-serif;
+			margin: 0;
+			padding: 20px;
 		}
-		</style>
+		#graphdiv {
+			width: 100%;
+			height: 645px;
+			margin-bottom: 20px;
+		}
+		#checkbox-container {
+			max-width: 1200px;
+			margin: 0 auto;
+			display: flex;
+			flex-wrap: wrap;
+			gap: 10px;
+		}
+		.checkbox-item {
+			white-space: nowrap;
+		}
+		.dygraph-legend {
+			font-family: Verdana, Geneva, sans-serif;
+			font-size: 14px;
+		}
+		.dygraph-legend > span {
+			display: block !important;
+		}	</style>
 </head>
 <body>
-	<img src="co2.png"><p>
-	<img src="temp.png">
-	<img src="heat_cooling.png">
+
+	<div id="graphdiv"></div>
+	<div id="checkbox-container"></div>
+
+	<script>
+		const labels = [
+			"Date", "Room temp.", "Co2", "Supply air vol.", "Exhaust air vol.",
+			"Outside air temp.", "Supply air temp.", "Return air temp.",
+			"Exhaust air temp.", "Cooling", "Heat exchanger", "Heating"
+		];
+
+		let dataSeriesEnabled = 2047; // All series visible by default
+		const urlBase = window.location.href.replace(/#.*$/, "");
+		const currentHash = window.location.hash;
+		const hashMatch = currentHash.match(/#(\d+)-(\d+)(?:;(\d+))?$/);
+
+		// Determine initial dateWindow (last 24h or from hash)
+		let dateWindow = hashMatch
+			? [parseFloat(hashMatch[1]), parseFloat(hashMatch[2])]
+			: [Date.now() - 86400000, Date.now()];
+
+		if (hashMatch && hashMatch[3]) {
+			dataSeriesEnabled = parseInt(hashMatch[3], 10);
+		}
+
+		// Create checkboxes dynamically
+		const container = document.getElementById('checkbox-container');
+		for (let i = 1; i < labels.length; i++) {
+			const checked = (dataSeriesEnabled & (1 << (i - 1))) !== 0;
+			const span = document.createElement('span');
+			span.className = 'checkbox-item';
+			span.innerHTML = `
+				<input type="checkbox" id="${i - 1}" ${checked ? "checked" : ""} onclick="change(this)">
+				${labels[i]}
+			`;
+			container.appendChild(span);
+		}
+
+		// Determine visibility for each series
+		const visibility = Array.from({ length: labels.length - 1 }, (_, i) =>
+			(dataSeriesEnabled & (1 << i)) !== 0
+		);
+
+		let g;
+
+		function loadGraph() {
+			// Update to the latest 24 hours unless user has zoomed
+			const now = Date.now();
+			const isAtEnd = dateWindow[1] >= now - 60000;
+			if (isAtEnd) {
+				dateWindow = [now - 86400000, now];
+			}
+
+			if (!g) {
+				g = new Dygraph(document.getElementById("graphdiv"), "data.csv", {
+					labels: labels,
+					visibility: visibility,
+					dateWindow: dateWindow,
+					showRangeSelector: true,
+					colors: [
+						"#696969", // Room temp.
+						"#0000ff", // Co2
+						"#ff0000", // Supply air vol.
+						"#ff9900", // Exhaust air vol.
+						"#3874c8", // Outside air temp.
+						"#c33f25", // Supply air temp.
+						"#f1d54c", // Return air temp.
+						"#693b28", // Exhaust air temp.
+						"#377ef7", // Cooling
+						"#f1d54c", // Heat exchanger
+						"#c33f25"  // Heating
+					],
+					zoomCallback: function(minX, maxX) {
+						dateWindow = [minX, maxX];
+						updateHash();
+					},
+					interactionModel: Dygraph.defaultInteractionModel
+				});
+
+				// Double-click to zoom out to full data range
+				document.getElementById("graphdiv").addEventListener("dblclick", () => {
+					const fullRange = g.xAxisExtremes();
+					g.updateOptions({ dateWindow: fullRange });
+					dateWindow = fullRange;
+					updateHash();
+				});
+			} else {
+				g.updateOptions({
+					file: "data.csv",
+					dateWindow: dateWindow
+				});
+			}
+
+			updateHash();
+		}
+
+		function updateHash() {
+			window.history.replaceState(
+				"",
+				"",
+				`${urlBase}#${Math.floor(dateWindow[0])}-${Math.floor(dateWindow[1])};${dataSeriesEnabled}`
+			);
+		}
+
+		function change(el) {
+			const id = parseInt(el.id);
+			const isVisible = el.checked;
+			g.setVisibility(id, isVisible);
+
+			if (isVisible) {
+				dataSeriesEnabled |= (1 << id);
+			} else {
+				dataSeriesEnabled &= ~(1 << id);
+			}
+
+			// Preserve current zoom range
+			dateWindow = g.xAxisRange();
+			updateHash();
+		}
+
+		// Initial load
+		Dygraph.onDOMready(loadGraph);
+
+		// Reload data and update graph every minute
+		setInterval(loadGraph, 60000);
+	</script>
 </body>
 </html>
