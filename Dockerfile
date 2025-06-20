@@ -46,7 +46,6 @@ RUN apt-get update && apt-get install -y \
 	python3-pip \
 	procps \
 	kpartx \
-	gnuplot \
 	cmake \
 	libdbi-perl \
 	libdbd-mysql-perl
@@ -57,9 +56,6 @@ RUN perl -pi.orig -e 's/(\%sudo\s+ALL\s*=\s*)\(ALL:ALL\)\s+ALL/$1\(ALL\) NOPASSW
 RUN git clone https://github.com/sourceperl/mbtget.git; \
 	cd mbtget; perl Makefile.PL; make; sudo make install
 
-COPY co2.gp /co2.gp
-COPY temp.gp /temp.gp
-COPY heat_cooling.gp /heat_cooling.gp
 COPY read_data.sh /read_data.sh
 COPY save_in_db.pl /save_in_db.pl
 COPY export_db.pl /export_db.pl
