@@ -26,9 +26,9 @@ do
 				"'$RETURN_AIR_TEMP'" \
 				"'$EXHAUST_AIR_TEMP'" \
 				"'$COOLING'" \
+				"'$INVERTER_SIGNAL_OUTPUT'" \
 				"'$HEAT_EXCHANGER'" \
-				"'$HEATING'" \
-				"'$INVERTER_SIGNAL_OUTPUT'"
+				"'$HEATING'"
 
 	# export all data to file
 	/export_db.pl > /data/data.csv.tmp
