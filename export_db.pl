@@ -42,7 +42,7 @@ while ($d = $sth->fetchrow_hashref) {
 	print $d->{exhaust_air_temp} . ",";
 	print $d->{cooling} . ",";
 	print $d->{heat_exchanger} . ",";
-	print $d->{heating} . "\n";
+	print $d->{heating} . ",";
 	print $d->{inverter_signal_output} . "\n";
 }
 
