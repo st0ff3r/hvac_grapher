@@ -31,7 +31,7 @@ my $res = $ua->request($req);
 
 if ($res->is_success) {
 	my $decoded = decode_json($res->decoded_content);
-	my $value_items = chomp $decoded->{values}->{NgDyDQAA}->{valueItems};
+	my $value_items = $decoded->{values}->{NgDyDQAA}->{valueItems};
 
 	if (exists $value_items->{$target_json_key}) {
 		print $value_items->{$target_json_key};
