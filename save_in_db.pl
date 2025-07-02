@@ -20,9 +20,9 @@ my $quoted_supply_air_temp =		$ARGV[5] || die "need to supply all parameters";
 my $quoted_return_air_temp =		$ARGV[6] || die "need to supply all parameters";
 my $quoted_exhaust_air_temp =		$ARGV[7] || die "need to supply all parameters";
 my $quoted_cooling =				$ARGV[8] || die "need to supply all parameters";
-my $quoted_heat_exchanger =			$ARGV[9] || die "need to supply all parameters";
-my $quoted_heating =				$ARGV[10] || die "need to supply all parameters";
-my $quoted_inverter_signal_output =	$ARGV[11] || die "need to supply all parameters";
+my $quoted_inverter_signal_output =	$ARGV[9] || die "need to supply all parameters";
+my $quoted_heat_exchanger =			$ARGV[10] || die "need to supply all parameters";
+my $quoted_heating =				$ARGV[11] || die "need to supply all parameters";
 
 $dbh->do(qq[INSERT INTO `samples` (
 				`room_temp`,
@@ -34,9 +34,9 @@ $dbh->do(qq[INSERT INTO `samples` (
 				`return_air_temp`,
 				`exhaust_air_temp`,
 				`cooling`,
+				`inverter_signal_output`,
 				`heat_exchanger`,
 				`heating`,
-				`inverter_signal_output`,
 				`unix_time`)
 			VALUES (
 				$quoted_room_temp,
@@ -48,8 +48,8 @@ $dbh->do(qq[INSERT INTO `samples` (
 				$quoted_return_air_temp,
 				$quoted_exhaust_air_temp,
 				$quoted_cooling,
+				$quoted_inverter_signal_output,
 				$quoted_heat_exchanger,
 				$quoted_heating,
-				$quoted_inverter_signal_output,
 				UNIX_TIMESTAMP())]
 ) or die $!;
