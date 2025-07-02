@@ -11,17 +11,18 @@ my $dbi = 'DBI:mysql:database=' . $mysql_database . ';host=hvac-db;port=3306';
 
 my $dbh = DBI->connect($dbi, $mysql_user, $mysql_password, { mysql_auto_reconnect => 1, mysql_enable_utf8 => 1 }) || die $!;
 
-my $quoted_room_temp =			$ARGV[0] || die "need to supply all parameters";
-my $quoted_co2 =				$ARGV[1] || die "need to supply all parameters";
-my $quoted_supply_air_volume =	$ARGV[2] || die "need to supply all parameters";
-my $quoted_exhaust_air_volume =	$ARGV[3] || die "need to supply all parameters";
-my $quoted_outside_air_temp =	$ARGV[4] || die "need to supply all parameters";
-my $quoted_supply_air_temp =	$ARGV[5] || die "need to supply all parameters";
-my $quoted_return_air_temp =	$ARGV[6] || die "need to supply all parameters";
-my $quoted_exhaust_air_temp =	$ARGV[7] || die "need to supply all parameters";
-my $quoted_cooling =			$ARGV[8] || die "need to supply all parameters";
-my $quoted_heat_exchanger =		$ARGV[9] || die "need to supply all parameters";
-my $quoted_heating =			$ARGV[10] || die "need to supply all parameters";
+my $quoted_room_temp =				$ARGV[0] || die "need to supply all parameters";
+my $quoted_co2 =					$ARGV[1] || die "need to supply all parameters";
+my $quoted_supply_air_volume =		$ARGV[2] || die "need to supply all parameters";
+my $quoted_exhaust_air_volume =		$ARGV[3] || die "need to supply all parameters";
+my $quoted_outside_air_temp =		$ARGV[4] || die "need to supply all parameters";
+my $quoted_supply_air_temp =		$ARGV[5] || die "need to supply all parameters";
+my $quoted_return_air_temp =		$ARGV[6] || die "need to supply all parameters";
+my $quoted_exhaust_air_temp =		$ARGV[7] || die "need to supply all parameters";
+my $quoted_cooling =				$ARGV[8] || die "need to supply all parameters";
+my $quoted_heat_exchanger =			$ARGV[9] || die "need to supply all parameters";
+my $quoted_heating =				$ARGV[10] || die "need to supply all parameters";
+my $quoted_inverter_signal_output =	$ARGV[11] || die "need to supply all parameters";
 
 $dbh->do(qq[INSERT INTO `samples` (
 				`room_temp`,
@@ -35,6 +36,7 @@ $dbh->do(qq[INSERT INTO `samples` (
 				`cooling`,
 				`heat_exchanger`,
 				`heating`,
+				`inverter_signal_output`,
 				`unix_time`)
 			VALUES (
 				$quoted_room_temp,
@@ -48,5 +50,6 @@ $dbh->do(qq[INSERT INTO `samples` (
 				$quoted_cooling,
 				$quoted_heat_exchanger,
 				$quoted_heating,
+				$quoted_inverter_signal_output,
 				UNIX_TIMESTAMP())]
 ) or die $!;

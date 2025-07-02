@@ -12,23 +12,24 @@ my $d;
 
 my $dbh = DBI->connect($dbi, $mysql_user, $mysql_password, { mysql_auto_reconnect => 1, mysql_enable_utf8 => 1 }) || die $!;
 
-my $sth = $dbh->prepare(qq[SELECT \
-							`room_temp`, \
-							`co2`, \
-							`supply_air_volume`, \
-							`exhaust_air_volume`, \
-							`outside_air_temp`, \
-							`supply_air_temp`, \
-							`return_air_temp`, \
-							`exhaust_air_temp`, \
-							`cooling`, \
-							`heat_exchanger`, \
-							`heating`, \
-							FROM_UNIXTIME(`unix_time`) as `t` \
+my $sth = $dbh->prepare(qq[SELECT
+							`room_temp`,
+							`co2`,
+							`supply_air_volume`,
+							`exhaust_air_volume`,
+							`outside_air_temp`,
+							`supply_air_temp`,
+							`return_air_temp`,
+							`exhaust_air_temp`,
+							`cooling`,
+							`heat_exchanger`,
+							`heating`,
+							`inverter_signal_output`,
+							FROM_UNIXTIME(`unix_time`) as `t`
 						FROM samples ORDER BY `unix_time` ASC]);
 $sth->execute || warn $!;
 
-print  "date,room_temp,co2,supply_air_volume,exhaust_air_volume,outside_air_temp,supply_air_temp,return_air_temp,exhaust_air_temp,cooling,heat_exchanger,heating\n";
+print  "date,room_temp,co2,supply_air_volume,exhaust_air_volume,outside_air_temp,supply_air_temp,return_air_temp,exhaust_air_temp,cooling,heat_exchanger,heating,inverter_signal_output\n";
 while ($d = $sth->fetchrow_hashref) {
 	print $d->{t} . ",";
 	print $d->{room_temp} . ",";
@@ -42,6 +43,7 @@ while ($d = $sth->fetchrow_hashref) {
 	print $d->{cooling} . ",";
 	print $d->{heat_exchanger} . ",";
 	print $d->{heating} . "\n";
+	print $d->{inverter_signal_output} . "\n";
 }
 
 __END__

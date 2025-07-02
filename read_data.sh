@@ -13,6 +13,7 @@ do
 	COOLING=$(mbtget -r4 -a 32 -s $HVAC_IP|perl -ne 'chomp; s/;//; print "$_"')
 	HEAT_EXCHANGER=$(mbtget -r4 -a 35 -s $HVAC_IP|perl -ne 'chomp; s/;//; print "$_"')
 	HEATING=$(mbtget -r4 -a 39 -s $HVAC_IP|perl -ne 'chomp; s/;//; print "$_"')
+	INVERTER_SIGNAL_OUTPUT=$(./read_data_html.pl)
 
 	# save all to db
 	/save_in_db.pl \
@@ -26,7 +27,8 @@ do
 				"'$EXHAUST_AIR_TEMP'" \
 				"'$COOLING'" \
 				"'$HEAT_EXCHANGER'" \
-				"'$HEATING'"
+				"'$HEATING'" \
+				"'$INVERTER_SIGNAL_OUTPUT'"
 
 	# export all data to file
 	/export_db.pl > /data/data.csv.tmp

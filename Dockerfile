@@ -48,7 +48,8 @@ RUN apt-get update && apt-get install -y \
 	kpartx \
 	cmake \
 	libdbi-perl \
-	libdbd-mysql-perl
+	libdbd-mysql-perl \
+	libjson-perl
 
 RUN adduser --disabled-password --gecos "" debian && usermod -a -G dialout debian
 RUN usermod -a -G sudo debian
@@ -57,6 +58,7 @@ RUN git clone https://github.com/sourceperl/mbtget.git; \
 	cd mbtget; perl Makefile.PL; make; sudo make install
 
 COPY read_data.sh /read_data.sh
+COPY read_data_html.pl /read_data_html.pl
 COPY save_in_db.pl /save_in_db.pl
 COPY export_db.pl /export_db.pl
 COPY docker-entrypoint.sh /docker-entrypoint.sh
