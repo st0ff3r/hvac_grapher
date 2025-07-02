@@ -7,7 +7,8 @@ use HTTP::Request;
 use JSON;
 
 # Configuration
-my $base_url = 'http://10.0.1.19/jsongen.html?fn=read&pin=%s&lng=0&us=2&oa=NgDyDQAA&ioa=BiLNeBoDAAE%%3D';
+my $hvac_ip = $ENV{HVAC_IP};
+my $base_url = 'http://' . $hvac_ip . '/jsongen.html?fn=read&pin=%s&lng=0&us=2&oa=NgDyDQAA&ioa=BiLNeBoDAAE%%3D';
 my $cookie_value_base = 'hmiLng=%%22English%%22; hmiPin=%%22%s%%22';
 
 my $username = 'ADMIN';
