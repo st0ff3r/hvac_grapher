@@ -22,9 +22,9 @@ my $sth = $dbh->prepare(qq[SELECT
 							`return_air_temp`,
 							`exhaust_air_temp`,
 							`cooling`,
+							`inverter_signal_output`,
 							`heat_exchanger`,
 							`heating`,
-							`inverter_signal_output`,
 							FROM_UNIXTIME(`unix_time`) as `t`
 						FROM samples ORDER BY `unix_time` ASC]);
 $sth->execute || warn $!;
@@ -41,9 +41,9 @@ while ($d = $sth->fetchrow_hashref) {
 	print $d->{return_air_temp} . ",";
 	print $d->{exhaust_air_temp} . ",";
 	print $d->{cooling} . ",";
+	print $d->{inverter_signal_output} . "\n";
 	print $d->{heat_exchanger} . ",";
 	print $d->{heating} . ",";
-	print $d->{inverter_signal_output} . "\n";
 }
 
 __END__
