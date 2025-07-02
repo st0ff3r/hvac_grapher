@@ -29,7 +29,7 @@ my $sth = $dbh->prepare(qq[SELECT
 						FROM samples ORDER BY `unix_time` ASC]);
 $sth->execute || warn $!;
 
-print  "date,room_temp,co2,supply_air_volume,exhaust_air_volume,outside_air_temp,supply_air_temp,return_air_temp,exhaust_air_temp,cooling,heat_exchanger,heating,inverter_signal_output\n";
+print  "date,room_temp,co2,supply_air_volume,exhaust_air_volume,outside_air_temp,supply_air_temp,return_air_temp,exhaust_air_temp,cooling,inverter_signal_output,heat_exchanger,heating\n";
 while ($d = $sth->fetchrow_hashref) {
 	print $d->{t} . ",";
 	print $d->{room_temp} . ",";
@@ -41,9 +41,9 @@ while ($d = $sth->fetchrow_hashref) {
 	print $d->{return_air_temp} . ",";
 	print $d->{exhaust_air_temp} . ",";
 	print $d->{cooling} . ",";
-	print $d->{inverter_signal_output} . "\n";
+	print $d->{inverter_signal_output} . ",";
 	print $d->{heat_exchanger} . ",";
-	print $d->{heating} . ",";
+	print $d->{heating} . "\n";
 }
 
 __END__
