@@ -61,6 +61,7 @@ COPY read_data.sh /read_data.sh
 COPY read_data_html.pl /read_data_html.pl
 COPY save_in_db.pl /save_in_db.pl
 COPY export_db.pl /export_db.pl
+COPY estimate_persons.pl /estimate_persons.pl
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 
 USER debian
